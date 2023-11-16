@@ -2,11 +2,12 @@ import 'dart:convert';
 import 'package:gdsc_movie_app/constants/api_endpoints.dart';
 import 'package:gdsc_movie_app/constants/api_keys.dart';
 import 'package:gdsc_movie_app/enums/tmdb_movie_list_type.dart';
+import 'package:gdsc_movie_app/enums/tmdb_movie_trand_type.dart';
 import 'package:gdsc_movie_app/models/tmdb/tmdb_movie_list_model.dart';
 import 'package:http/http.dart' as http;
 
 class TMDBMovieRepository {
-  Future<TMDBMovieListModel?> getNowPlaying({
+  Future<TMDBMovieListModel?> getMovieList({
     required TMDBMovieListType type,
     int page = 1,
   }) async {
@@ -18,6 +19,29 @@ class TMDBMovieRepository {
     final res = await http.get(
       Uri.parse(
           "${ApiEndpoints.tmdbMovieList}/${type.endPoint}?language=en-US&page=$page"),
+      headers: headers,
+    );
+
+    // await Future.delayed(const Duration(seconds: 2));
+
+    if (res.statusCode == 200) {
+      return TMDBMovieListModel.fromJson(await json.decode(res.body));
+    }
+
+    return null;
+  }
+
+  Future<TMDBMovieListModel?> getMovieTrendList({
+    required TMDBMovieTrendType type,
+  }) async {
+    Map<String, String> headers = {
+      'accept': 'application/json',
+      'Authorization': 'Bearer ${ApiKey.tmbdReadAccessToken}',
+    };
+
+    final res = await http.get(
+      Uri.parse(
+          "${ApiEndpoints.tmdbMovieTrendList}/${type.endPoint}?language=en-US"),
       headers: headers,
     );
 
