@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:gdsc_movie_app/constants/api_endpoint.dart';
+import 'package:gdsc_movie_app/constants/api_endpoints.dart';
 import 'package:gdsc_movie_app/constants/api_keys.dart';
 import 'package:gdsc_movie_app/models/tmdb/tmdb_movie_list_model.dart';
 import 'package:http/http.dart' as http;
@@ -14,7 +14,7 @@ class TMDBMovieRepository {
     };
 
     final res = await http.get(
-      Uri.parse("${ApiEndpoint.tmdbNowPlaying}?language=en-US&page=$page"),
+      Uri.parse("${ApiEndpoints.tmdbNowPlaying}?language=en-US&page=$page"),
       headers: headers,
     );
 
