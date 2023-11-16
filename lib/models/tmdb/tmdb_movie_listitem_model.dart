@@ -1,12 +1,25 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'tmdb_movie_listitem_model.g.dart';
+
+@JsonSerializable()
 class TMDBMovieListItemModel {
   final bool? adult;
-  final String? backdropPath, posterPath;
+  @JsonKey(name: 'backdrop_path')
+  final String? backdropPath;
+  @JsonKey(name: 'poster_path')
+  final String? posterPath;
+  @JsonKey(name: 'genre_ids')
   final List<int>? genreIds;
   final int? id;
+  @JsonKey(name: 'original_title')
   final String? originalTitle;
   final String? overview;
+  @JsonKey(name: 'release_date')
   final String? releaseDate;
+  @JsonKey(name: 'vote_average')
   final double? voteAverage;
+  @JsonKey(name: 'vote_count')
   final int? voteCount;
 
   TMDBMovieListItemModel({
@@ -22,23 +35,8 @@ class TMDBMovieListItemModel {
     this.voteCount,
   });
 
-  factory TMDBMovieListItemModel.fromJson(Map<String, dynamic> json) {
-    List<int> genreIds = [];
-    for (var id in json['genre_ids']) {
-      genreIds.add(id);
-    }
+  factory TMDBMovieListItemModel.fromJson(Map<String, dynamic> json) =>
+      _$TMDBMovieListItemModelFromJson(json);
 
-    return TMDBMovieListItemModel(
-      adult: json['adult'],
-      backdropPath: json['backdrop_path'],
-      posterPath: json['poster_path'],
-      genreIds: genreIds,
-      id: json['id'],
-      originalTitle: json['original_title'],
-      overview: json['overview'],
-      releaseDate: json['release_date'],
-      voteAverage: json['vote_average'],
-      voteCount: json['vote_count'],
-    );
-  }
+  Map<String, dynamic> toJson() => _$TMDBMovieListItemModelToJson(this);
 }
