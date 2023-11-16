@@ -1,9 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:gdsc_movie_app/repositories/tmdb/tmdb_movie_repository.dart';
 import 'package:gdsc_movie_app/screens/home/widgets/home_card_widget.dart';
 import 'package:gdsc_movie_app/screens/home/widgets/home_sliver_appbar.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    TMDBMovieRepository repository = TMDBMovieRepository();
+    getMovieTest(repository);
+  }
+
+  void getMovieTest(TMDBMovieRepository repository) async {
+    var result = await repository.getNowPlaying(page: 1);
+    print(result?.results?[0].originalTitle);
+  }
 
   @override
   Widget build(BuildContext context) {
