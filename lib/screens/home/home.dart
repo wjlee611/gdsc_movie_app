@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gdsc_movie_app/enums/tmdb_movie_list_type.dart';
 import 'package:gdsc_movie_app/repositories/tmdb/tmdb_movie_repository.dart';
 import 'package:gdsc_movie_app/screens/home/widgets/home_card_widget.dart';
 import 'package:gdsc_movie_app/screens/home/widgets/home_sliver_appbar.dart';
@@ -24,7 +25,27 @@ class HomeScreen extends StatelessWidget {
               [
                 HomeCardWidget(
                   title: '현재 상영 중',
-                  futureFunction: _repository.getNowPlaying,
+                  futureFunction: () => _repository.getNowPlaying(
+                    type: TMDBMovieListType.nowPlaying,
+                  ),
+                ),
+                HomeCardWidget(
+                  title: '인기 영화',
+                  futureFunction: () => _repository.getNowPlaying(
+                    type: TMDBMovieListType.popular,
+                  ),
+                ),
+                HomeCardWidget(
+                  title: '높은 평점 영화',
+                  futureFunction: () => _repository.getNowPlaying(
+                    type: TMDBMovieListType.topRated,
+                  ),
+                ),
+                HomeCardWidget(
+                  title: '상영 예정',
+                  futureFunction: () => _repository.getNowPlaying(
+                    type: TMDBMovieListType.upComing,
+                  ),
                 ),
               ],
             ),
