@@ -1,30 +1,35 @@
+import 'package:equatable/equatable.dart';
 import 'package:gdsc_movie_app/models/tmdb/tmdb_movie_listitem_model.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-// TODO: json_serializable, equatable
-class TMDBMovieListModel {
+part 'tmdb_movie_list_model.g.dart';
+
+@JsonSerializable(explicitToJson: true)
+class TMDBMovieListModel extends Equatable {
   final int? page;
   final List<TMDBMovieListItemModel>? results;
+  @JsonKey(name: 'total_pages')
   final int? totalPages;
+  @JsonKey(name: 'total_results')
   final int? totalResults;
 
-  TMDBMovieListModel({
+  const TMDBMovieListModel({
     this.page,
     this.results,
     this.totalPages,
     this.totalResults,
   });
 
-  factory TMDBMovieListModel.fromJson(Map<String, dynamic> json) {
-    List<TMDBMovieListItemModel> results = [];
-    for (var movie in json['results']) {
-      results.add(TMDBMovieListItemModel.fromJson(movie));
-    }
+  factory TMDBMovieListModel.fromJson(Map<String, dynamic> json) =>
+      _$TMDBMovieListModelFromJson(json);
 
-    return TMDBMovieListModel(
-      page: json['page'],
-      results: results,
-      totalPages: json['total_pages'],
-      totalResults: json['total_results'],
-    );
-  }
+  Map<String, dynamic> toJson() => _$TMDBMovieListModelToJson(this);
+
+  @override
+  List<Object?> get props => [
+        page,
+        results,
+        totalPages,
+        totalResults,
+      ];
 }

@@ -1,9 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'tmdb_movie_listitem_model.g.dart';
 
 @JsonSerializable()
-class TMDBMovieListItemModel {
+class TMDBMovieListItemModel extends Equatable {
   final bool? adult;
   @JsonKey(name: 'backdrop_path')
   final String? backdropPath;
@@ -22,7 +23,7 @@ class TMDBMovieListItemModel {
   @JsonKey(name: 'vote_count')
   final int? voteCount;
 
-  TMDBMovieListItemModel({
+  const TMDBMovieListItemModel({
     this.adult,
     this.backdropPath,
     this.posterPath,
@@ -39,4 +40,18 @@ class TMDBMovieListItemModel {
       _$TMDBMovieListItemModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$TMDBMovieListItemModelToJson(this);
+
+  @override
+  List<Object?> get props => [
+        adult,
+        backdropPath,
+        posterPath,
+        genreIds,
+        id,
+        originalTitle,
+        overview,
+        releaseDate,
+        voteAverage,
+        voteCount,
+      ];
 }
