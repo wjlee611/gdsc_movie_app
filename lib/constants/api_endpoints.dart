@@ -3,4 +3,6 @@ class ApiEndpoints {
   static const String tmdbMovieList = 'https://api.themoviedb.org/3/movie';
   static const String tmdbMovieTrendList =
       'https://api.themoviedb.org/3/trending/movie';
+  static const String tmdbSearchMovie =
+      'https://api.themoviedb.org/3/search/movie';
 }

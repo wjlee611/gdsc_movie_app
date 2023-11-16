@@ -54,6 +54,7 @@ class _CommonInputWidgetState extends State<CommonInputWidget> {
       onEditingComplete: _onSubmit,
       textInputAction: TextInputAction.search,
       textAlignVertical: TextAlignVertical.center,
+      autocorrect: false,
       decoration: InputDecoration(
         hintText: '영화를 검색해보세요!',
         hintStyle: TextStyle(

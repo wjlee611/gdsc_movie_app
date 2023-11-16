@@ -49,4 +49,27 @@ class TMDBMovieRepository {
 
     return null;
   }
+
+  Future<TMDBMovieListModel?> getSearchMovie({
+    required String query,
+    int page = 1,
+    bool includeAdult = false,
+  }) async {
+    Map<String, String> headers = {
+      'accept': 'application/json',
+      'Authorization': 'Bearer ${ApiKey.tmbdReadAccessToken}',
+    };
+
+    final res = await http.get(
+      Uri.parse(
+          "${ApiEndpoints.tmdbSearchMovie}?query=$query&include_adult=$includeAdult&language=en-US&page=$page"),
+      headers: headers,
+    );
+
+    if (res.statusCode == 200) {
+      return TMDBMovieListModel.fromJson(await json.decode(res.body));
+    }
+
+    return null;
+  }
 }
