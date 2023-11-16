@@ -18,6 +18,8 @@ class TMDBMovieRepository {
       headers: headers,
     );
 
+    // await Future.delayed(const Duration(seconds: 2));
+
     if (res.statusCode == 200) {
       return TMDBMovieListModel.fromJson(await json.decode(res.body));
     }
