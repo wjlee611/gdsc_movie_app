@@ -1,5 +1,6 @@
 import 'package:gdsc_movie_app/models/tmdb/tmdb_movie_listitem_model.dart';
 
+// TODO: json_serializable, equatable
 class TMDBMovieListModel {
   final int? page;
   final List<TMDBMovieListItemModel>? results;
