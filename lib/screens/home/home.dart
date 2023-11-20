@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gdsc_movie_app/enums/tmdb_movie_list_type.dart';
-import 'package:gdsc_movie_app/enums/tmdb_movie_trand_type.dart';
 import 'package:gdsc_movie_app/repositories/tmdb/tmdb_movie_repository.dart';
 import 'package:gdsc_movie_app/screens/home/widgets/home_card_widget.dart';
 import 'package:gdsc_movie_app/screens/home/widgets/home_sliver_appbar.dart';
@@ -27,13 +26,13 @@ class HomeScreen extends StatelessWidget {
                 HomeCardWidget(
                   title: '일간 트렌드',
                   futureFunction: () => _repository.getMovieTrendList(
-                    type: TMDBMovieTrendType.day,
+                    type: TMDBMovieListType.day,
                   ),
                 ),
                 HomeCardWidget(
                   title: '주간 트렌드',
                   futureFunction: () => _repository.getMovieTrendList(
-                    type: TMDBMovieTrendType.week,
+                    type: TMDBMovieListType.week,
                   ),
                 ),
                 HomeCardWidget(
