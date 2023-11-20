@@ -10,23 +10,19 @@ class TMDBMovieRepository {
     required TMDBMovieListType type,
     int page = 1,
   }) async {
-    try {
-      Map<String, String> headers = {
-        'accept': 'application/json',
-        'Authorization': 'Bearer ${ApiKey.tmbdReadAccessToken}',
-      };
+    Map<String, String> headers = {
+      'accept': 'application/json',
+      'Authorization': 'Bearer ${ApiKey.tmbdReadAccessToken}',
+    };
 
-      final res = await http.get(
-        Uri.parse(
-            "${ApiEndpoints.tmdbMovieList}/${type.endPoint}?language=en-US&page=$page"),
-        headers: headers,
-      );
+    final res = await http.get(
+      Uri.parse(
+          "${ApiEndpoints.tmdbMovieList}/${type.endPoint}?language=en-US&page=$page"),
+      headers: headers,
+    );
 
-      if (res.statusCode == 200) {
-        return TMDBMovieListModel.fromJson(await json.decode(res.body));
-      }
-    } catch (e) {
-      print(e.toString());
+    if (res.statusCode == 200) {
+      return TMDBMovieListModel.fromJson(await json.decode(res.body));
     }
 
     return null;
@@ -35,23 +31,22 @@ class TMDBMovieRepository {
   Future<TMDBMovieListModel?> getMovieTrendList({
     required TMDBMovieListType type,
   }) async {
-    try {
-      Map<String, String> headers = {
-        'accept': 'application/json',
-        'Authorization': 'Bearer ${ApiKey.tmbdReadAccessToken}',
-      };
+    Map<String, String> headers = {
+      'accept': 'application/json',
+      'Authorization': 'Bearer ${ApiKey.tmbdReadAccessToken}',
+    };
 
-      final res = await http.get(
-        Uri.parse(
-            "${ApiEndpoints.tmdbMovieTrendList}/${type.endPoint}?language=en-US"),
-        headers: headers,
-      );
+    final res = await http.get(
+      Uri.parse(
+          "${ApiEndpoints.tmdbMovieTrendList}/${type.endPoint}?language=en-US"),
+      headers: headers,
+    );
 
-      if (res.statusCode == 200) {
-        return TMDBMovieListModel.fromJson(await json.decode(res.body));
-      }
-    } catch (e) {
-      print(e.toString());
+    // For exception test
+    // throw Exception('asdasd');
+
+    if (res.statusCode == 200) {
+      return TMDBMovieListModel.fromJson(await json.decode(res.body));
     }
 
     return null;
@@ -62,23 +57,19 @@ class TMDBMovieRepository {
     int page = 1,
     bool includeAdult = false,
   }) async {
-    try {
-      Map<String, String> headers = {
-        'accept': 'application/json',
-        'Authorization': 'Bearer ${ApiKey.tmbdReadAccessToken}',
-      };
+    Map<String, String> headers = {
+      'accept': 'application/json',
+      'Authorization': 'Bearer ${ApiKey.tmbdReadAccessToken}',
+    };
 
-      final res = await http.get(
-        Uri.parse(
-            "${ApiEndpoints.tmdbSearchMovie}?query=$query&include_adult=$includeAdult&language=en-US&page=$page"),
-        headers: headers,
-      );
+    final res = await http.get(
+      Uri.parse(
+          "${ApiEndpoints.tmdbSearchMovie}?query=$query&include_adult=$includeAdult&language=en-US&page=$page"),
+      headers: headers,
+    );
 
-      if (res.statusCode == 200) {
-        return TMDBMovieListModel.fromJson(await json.decode(res.body));
-      }
-    } catch (e) {
-      print(e.toString());
+    if (res.statusCode == 200) {
+      return TMDBMovieListModel.fromJson(await json.decode(res.body));
     }
 
     return null;

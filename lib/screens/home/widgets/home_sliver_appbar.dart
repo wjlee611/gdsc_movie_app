@@ -59,9 +59,7 @@ class HomeSliverAppBar extends StatelessWidget {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {
-                        print('on pressed');
-                      },
+                      onPressed: () {},
                       icon: const Icon(
                         Icons.more_vert_rounded,
                         color: Colors.white,

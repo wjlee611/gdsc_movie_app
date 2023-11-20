@@ -1,18 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gdsc_movie_app/bloc/home/home_movies_bloc.dart';
+import 'package:gdsc_movie_app/bloc/home/home_movies_event.dart';
+import 'package:gdsc_movie_app/bloc/home/home_movies_state.dart';
 import 'package:gdsc_movie_app/constants/gaps.dart';
 import 'package:gdsc_movie_app/constants/sizes.dart';
-import 'package:gdsc_movie_app/models/tmdb/tmdb_movie_list_model.dart';
+import 'package:gdsc_movie_app/enums/common_loading_type.dart';
+import 'package:gdsc_movie_app/enums/tmdb_movie_list_type.dart';
 import 'package:gdsc_movie_app/screens/home/widgets/home_movie_card_widget.dart';
 
 class HomeCardWidget extends StatelessWidget {
-  final String title;
-  final Future<TMDBMovieListModel?> Function() futureFunction;
+  final TMDBMovieListType type;
 
   const HomeCardWidget({
     super.key,
-    required this.title,
-    required this.futureFunction,
+    required this.type,
   });
+
+  void _fetchData(BuildContext context) {
+    context.read<HomeMoviesBloc>().add(HomeMoviesGetEvent(
+          type: type,
+        ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +36,7 @@ class HomeCardWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(Sizes.size10),
             child: Text(
-              title,
+              type.title,
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: Sizes.size20,
@@ -35,12 +44,37 @@ class HomeCardWidget extends StatelessWidget {
               ),
             ),
           ),
+          // TODO: Refectoring
           SizedBox(
             height: 180,
-            child: FutureBuilder(
-              future: futureFunction(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
+            child: BlocBuilder<HomeMoviesBloc, HomeMoviesState>(
+              buildWhen: (previous, current) =>
+                  previous.status[type] != current.status[type],
+              builder: (context, state) {
+                if (state.status[type] == CommonLoadingType.init) {
+                  _fetchData(context);
+                }
+                if (state.status[type] == CommonLoadingType.error) {
+                  return Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          state.message ?? '오류가 발생했습니다.',
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        Gaps.v5,
+                        ElevatedButton(
+                          onPressed: () => _fetchData(context),
+                          child: const Text('재시도'),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                if (state.status[type] == CommonLoadingType.loaded) {
                   return ListView.separated(
                     scrollDirection: Axis.horizontal,
                     padding:
@@ -48,10 +82,12 @@ class HomeCardWidget extends StatelessWidget {
                     separatorBuilder: (context, index) => Gaps.h10,
                     itemBuilder: (context, index) => HomeMovieCardWidget(
                       title:
-                          snapshot.data?.results?[index].originalTitle ?? 'N/A',
-                      image: snapshot.data?.results?[index].posterPath ?? '',
+                          state.category[type]?.results?[index].originalTitle ??
+                              'N/A',
+                      image: state.category[type]?.results?[index].posterPath ??
+                          '',
                     ),
-                    itemCount: snapshot.data?.results?.length ?? 0,
+                    itemCount: state.category[type]?.results?.length ?? 0,
                   );
                 }
                 return Center(
