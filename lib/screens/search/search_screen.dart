@@ -3,6 +3,7 @@ import 'package:gdsc_movie_app/constants/sizes.dart';
 import 'package:gdsc_movie_app/repositories/tmdb/tmdb_movie_repository.dart';
 import 'package:gdsc_movie_app/screens/search/widgets/search_listitem_widget.dart';
 import 'package:gdsc_movie_app/widgets/common_input_widget.dart';
+import 'package:gdsc_movie_app/widgets/common_loading_widget.dart';
 
 class SearchScreen extends StatefulWidget {
   final String? initValue;
@@ -62,11 +63,7 @@ class _SearchScreenState extends State<SearchScreen> {
               itemCount: snapshot.data?.results?.length ?? 0,
             );
           }
-          return Center(
-            child: CircularProgressIndicator(
-              color: Colors.yellow.shade700,
-            ),
-          );
+          return const CommonLoadingWidget();
         },
       ),
     );

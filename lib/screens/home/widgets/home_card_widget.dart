@@ -7,7 +7,9 @@ import 'package:gdsc_movie_app/constants/gaps.dart';
 import 'package:gdsc_movie_app/constants/sizes.dart';
 import 'package:gdsc_movie_app/enums/common_loading_type.dart';
 import 'package:gdsc_movie_app/enums/tmdb_movie_list_type.dart';
+import 'package:gdsc_movie_app/models/tmdb/tmdb_movie_listitem_model.dart';
 import 'package:gdsc_movie_app/screens/home/widgets/home_movie_card_widget.dart';
+import 'package:gdsc_movie_app/widgets/common_loading_widget.dart';
 
 class HomeCardWidget extends StatelessWidget {
   final TMDBMovieListType type;
@@ -44,7 +46,6 @@ class HomeCardWidget extends StatelessWidget {
               ),
             ),
           ),
-          // TODO: Refectoring
           SizedBox(
             height: 180,
             child: BlocBuilder<HomeMoviesBloc, HomeMoviesState>(
@@ -55,48 +56,60 @@ class HomeCardWidget extends StatelessWidget {
                   _fetchData(context);
                 }
                 if (state.status[type] == CommonLoadingType.error) {
-                  return Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          state.message ?? '오류가 발생했습니다.',
-                          style: const TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                        Gaps.v5,
-                        ElevatedButton(
-                          onPressed: () => _fetchData(context),
-                          child: const Text('재시도'),
-                        ),
-                      ],
-                    ),
+                  return _errorBody(
+                    context,
+                    message: state.message,
                   );
                 }
                 if (state.status[type] == CommonLoadingType.loaded) {
-                  return ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: Sizes.size10),
-                    separatorBuilder: (context, index) => Gaps.h10,
-                    itemBuilder: (context, index) => HomeMovieCardWidget(
-                      title:
-                          state.category[type]?.results?[index].originalTitle ??
-                              'N/A',
-                      image: state.category[type]?.results?[index].posterPath ??
-                          '',
-                    ),
-                    itemCount: state.category[type]?.results?.length ?? 0,
+                  return _loadedBody(
+                    context,
+                    results: state.category[type]?.results,
                   );
                 }
-                return Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.yellow.shade700,
-                  ),
-                );
+                return const CommonLoadingWidget();
               },
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _loadedBody(
+    BuildContext context, {
+    List<TMDBMovieListItemModel>? results,
+  }) {
+    return ListView.separated(
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.symmetric(horizontal: Sizes.size10),
+      separatorBuilder: (context, index) => Gaps.h10,
+      itemBuilder: (context, index) => HomeMovieCardWidget(
+        title: results?[index].originalTitle ?? 'N/A',
+        image: results?[index].posterPath ?? '',
+      ),
+      itemCount: results?.length ?? 0,
+    );
+  }
+
+  Widget _errorBody(
+    BuildContext context, {
+    String? message,
+  }) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            message ?? '오류가 발생했습니다.',
+            style: const TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          Gaps.v5,
+          ElevatedButton(
+            onPressed: () => _fetchData(context),
+            child: const Text('재시도'),
           ),
         ],
       ),
