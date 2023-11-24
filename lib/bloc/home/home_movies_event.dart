@@ -1,6 +1,6 @@
 import 'package:gdsc_movie_app/enums/tmdb_movie_list_type.dart';
 
-abstract class HomeMoviesEvent {
+interface class HomeMoviesEvent {
   const HomeMoviesEvent();
 }
 

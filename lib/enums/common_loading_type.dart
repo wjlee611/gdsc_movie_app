@@ -3,4 +3,5 @@ enum CommonLoadingType {
   loading,
   loaded,
   error,
+  neverUpdate,
 }
