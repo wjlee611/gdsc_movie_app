@@ -5,14 +5,21 @@ class CommonInputWidget extends StatefulWidget {
   final Function(String)? onSubmit;
   final Function(String)? onChange;
   final String? value;
+  final String? hintText;
   final EdgeInsets padding;
+  final bool viewSuffix;
 
   const CommonInputWidget({
     super.key,
     this.onSubmit,
     this.onChange,
     this.value,
-    this.padding = const EdgeInsets.only(left: Sizes.size20),
+    this.hintText,
+    this.padding = const EdgeInsets.only(
+      left: Sizes.size20,
+      right: Sizes.size20,
+    ),
+    this.viewSuffix = true,
   });
 
   @override
@@ -64,20 +71,22 @@ class _CommonInputWidgetState extends State<CommonInputWidget> {
       onEditingComplete: _onSubmit,
       onChanged: widget.onChange,
       textInputAction: TextInputAction.search,
-      textAlignVertical: TextAlignVertical.center,
+      textAlignVertical: widget.viewSuffix ? TextAlignVertical.center : null,
       autocorrect: false,
       decoration: InputDecoration(
-        hintText: '영화를 검색해보세요!',
+        hintText: widget.hintText,
         hintStyle: TextStyle(
           color: Colors.white.withOpacity(0.5),
         ),
-        suffixIcon: IconButton(
-          onPressed: _onSubmit,
-          icon: const Icon(
-            Icons.search,
-            color: Colors.white,
-          ),
-        ),
+        suffixIcon: widget.viewSuffix
+            ? IconButton(
+                onPressed: _onSubmit,
+                icon: const Icon(
+                  Icons.search,
+                  color: Colors.white,
+                ),
+              )
+            : null,
         contentPadding: widget.padding,
         border: InputBorder.none,
       ),

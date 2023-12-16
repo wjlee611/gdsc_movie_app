@@ -157,6 +157,7 @@ class HomeSliverAppBar extends StatelessWidget {
                 child: BlocBuilder<SearchMoviesBloc, SearchMoviesState>(
                   builder: (context, state) => CommonInputWidget(
                     value: state.query,
+                    hintText: "영화를 검색해보세요!",
                     onChange: (value) => _onChange(
                       context,
                       value: value,

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,8 @@ import 'package:gdsc_movie_app/bloc/search/search_movies_bloc.dart';
 import 'package:gdsc_movie_app/bloc/splash/splash_cubit.dart';
 import 'package:gdsc_movie_app/bloc/splash/test_load_data_cubit.dart';
 import 'package:gdsc_movie_app/firebase_options.dart';
-import 'package:gdsc_movie_app/repositories/authentication/authentication_repository.dart';
+import 'package:gdsc_movie_app/repositories/firebase/authentication_repository.dart';
+import 'package:gdsc_movie_app/repositories/firebase/user_repository.dart';
 import 'package:gdsc_movie_app/repositories/tmdb/tmdb_movie_repository.dart';
 import 'package:gdsc_movie_app/screens/app_router.dart';
 
@@ -35,6 +37,10 @@ class MyApp extends StatelessWidget {
         RepositoryProvider(
           create: (context) => TMDBMovieRepository(),
         ),
+        RepositoryProvider(
+          create: (context) =>
+              UserRepository(firestore: FirebaseFirestore.instance),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -45,6 +51,7 @@ class MyApp extends StatelessWidget {
             create: (context) => AuthBloc(
               authenticationRepository:
                   context.read<AuthenticationRepository>(),
+              userRepository: context.read<UserRepository>(),
             ),
           ),
           BlocProvider(

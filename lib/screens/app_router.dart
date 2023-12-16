@@ -1,7 +1,10 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gdsc_movie_app/bloc/authentication/auth_bloc.dart';
 import 'package:gdsc_movie_app/bloc/authentication/auth_state.dart';
+import 'package:gdsc_movie_app/bloc/authentication/signup_bloc.dart';
+import 'package:gdsc_movie_app/repositories/firebase/user_repository.dart';
 import 'package:gdsc_movie_app/screens/authentication/signin_screen.dart';
 import 'package:gdsc_movie_app/screens/authentication/signup_screen.dart';
 import 'package:gdsc_movie_app/screens/home/home.dart';
@@ -37,7 +40,14 @@ class _AppRouterState extends State<AppRouter> {
         ),
         GoRoute(
           path: '/signup',
-          builder: (context, state) => const SignupScreen(),
+          builder: (context, state) => BlocProvider(
+            create: (context) => SignupBloc(
+              user: context.read<AuthBloc>().state.user,
+              userRepository: context.read<UserRepository>(),
+              storage: FirebaseStorage.instance,
+            ),
+            child: SignupScreen(),
+          ),
         ),
         GoRoute(
           path: '/home',

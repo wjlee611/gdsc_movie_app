@@ -45,6 +45,7 @@ class SearchScreen extends StatelessWidget {
           buildWhen: (previous, current) => previous.query != current.query,
           builder: (context, state) => CommonInputWidget(
             value: state.query,
+            hintText: '영화를 검색해보세요!',
             padding: EdgeInsets.zero,
             onChange: (value) => _onChange(
               context,
