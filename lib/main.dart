@@ -1,11 +1,19 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gdsc_movie_app/bloc/home/home_movies_bloc.dart';
 import 'package:gdsc_movie_app/bloc/search/search_movies_bloc.dart';
+import 'package:gdsc_movie_app/firebase_options.dart';
 import 'package:gdsc_movie_app/repositories/tmdb/tmdb_movie_repository.dart';
 import 'package:gdsc_movie_app/screens/home/home.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MyApp());
 }
 
