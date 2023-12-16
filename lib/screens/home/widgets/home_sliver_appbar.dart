@@ -1,6 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gdsc_movie_app/bloc/authentication/auth_bloc.dart';
+import 'package:gdsc_movie_app/bloc/authentication/auth_state.dart';
 import 'package:gdsc_movie_app/bloc/search/search_movies_bloc.dart';
 import 'package:gdsc_movie_app/bloc/search/search_movies_event.dart';
 import 'package:gdsc_movie_app/bloc/search/search_movies_state.dart';
@@ -26,6 +28,14 @@ class HomeSliverAppBar extends StatelessWidget {
     required String value,
   }) {
     context.push('/search');
+  }
+
+  void _onTapProfile(BuildContext context) {
+    if (context.read<AuthBloc>().state.status == AuthStatus.unknown) {
+      context.push('/signin');
+    } else {
+      context.push('/profile');
+    }
   }
 
   @override
@@ -75,29 +85,53 @@ class HomeSliverAppBar extends StatelessWidget {
                 Gaps.v5,
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    context.push('/profile');
-                  },
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: Colors.blueGrey.shade400,
-                      ),
-                      Gaps.h10,
-                      const Text(
-                        '000님 어서오세요',
-                        style: TextStyle(
-                          fontSize: Sizes.size14,
-                          color: Colors.white,
+                  onTap: () => _onTapProfile(context),
+                  child: BlocBuilder<AuthBloc, AuthState>(
+                    builder: (context, state) {
+                      if (state.status == AuthStatus.authenticated) {
+                        return Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.blueGrey.shade400,
+                            ),
+                            Gaps.h10,
+                            const Text(
+                              '000님 어서오세요',
+                              style: TextStyle(
+                                fontSize: Sizes.size14,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Gaps.h5,
+                            const Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              color: Colors.white,
+                              size: Sizes.size12,
+                            ),
+                          ],
+                        );
+                      }
+                      return const SizedBox(
+                        height: Sizes.size40,
+                        child: Row(
+                          children: [
+                            Text(
+                              '로그인 해주세요',
+                              style: TextStyle(
+                                fontSize: Sizes.size14,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Gaps.h5,
+                            Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              color: Colors.white,
+                              size: Sizes.size12,
+                            ),
+                          ],
                         ),
-                      ),
-                      Gaps.h5,
-                      const Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        color: Colors.white,
-                        size: Sizes.size12,
-                      ),
-                    ],
+                      );
+                    },
                   ),
                 ),
               ],

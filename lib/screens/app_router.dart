@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gdsc_movie_app/bloc/authentication/auth_bloc.dart';
+import 'package:gdsc_movie_app/bloc/authentication/auth_state.dart';
 import 'package:gdsc_movie_app/screens/authentication/signin_screen.dart';
+import 'package:gdsc_movie_app/screens/authentication/signup_screen.dart';
 import 'package:gdsc_movie_app/screens/home/home.dart';
 import 'package:gdsc_movie_app/screens/profile/profile_screen.dart';
 import 'package:gdsc_movie_app/screens/search/search_screen.dart';
@@ -31,10 +35,10 @@ class _AppRouterState extends State<AppRouter> {
           path: '/signin',
           builder: (context, state) => const SigninScreen(),
         ),
-        // GoRoute(
-        //   path: '/signup',
-        //   builder: (context, state) => SignupScreen(),
-        // ),
+        GoRoute(
+          path: '/signup',
+          builder: (context, state) => const SignupScreen(),
+        ),
         GoRoute(
           path: '/home',
           builder: (context, state) => const HomeScreen(),
@@ -42,6 +46,13 @@ class _AppRouterState extends State<AppRouter> {
         GoRoute(
           path: '/profile',
           builder: (context, state) => const ProfileScreen(),
+          redirect: (context, state) {
+            final authStatus = context.read<AuthBloc>().state.status;
+            if (authStatus == AuthStatus.unauthenticated) {
+              return '/signup';
+            }
+            return state.path;
+          },
         ),
         GoRoute(
           path: '/search',

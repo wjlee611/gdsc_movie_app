@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gdsc_movie_app/bloc/authentication/auth_event.dart';
 import 'package:gdsc_movie_app/bloc/authentication/auth_state.dart';
 import 'package:gdsc_movie_app/repositories/authentication/authentication_repository.dart';
 
-class AuthBloc extends Bloc<AuthEvent, AuthState> with ChangeNotifier {
+class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthenticationRepository authenticationRepository;
 
   AuthBloc({
@@ -21,33 +20,49 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> with ChangeNotifier {
     AuthInitEvent event,
     Emitter<AuthState> emit,
   ) async {
-    authenticationRepository.user.listen((user) {
-      // SignOut 상태
-      if (user == null) {
-        emit(state.copyWith(status: AuthStatus.unknown));
-      }
-      // SignIn 상태
-      else {
-        emit(state.copyWith(status: AuthStatus.unauthenticated));
-      }
+    final user = await authenticationRepository.user.first;
 
-      notifyListeners();
-    });
-
-    emit(state.copyWith(status: AuthStatus.initialized));
+    // SignOut 상태
+    if (user == null) {
+      emit(state.copyWith(status: AuthStatus.unknown));
+    }
+    // SignIn 상태
+    else {
+      emit(state.copyWith(
+        status: AuthStatus.unauthenticated,
+        user: user,
+      ));
+    }
   }
 
   Future<void> _authGoogleSigninEventHandler(
     AuthGoogleSigninEvent event,
     Emitter<AuthState> emit,
   ) async {
-    await authenticationRepository.signInWithGoogle();
+    try {
+      await authenticationRepository.signInWithGoogle();
+      final user = await authenticationRepository.user.first;
+      emit(state.copyWith(
+        status: AuthStatus.unauthenticated,
+        user: user,
+      ));
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<void> _authSignoutEventHandler(
     AuthSignoutEvent event,
     Emitter<AuthState> emit,
   ) async {
-    await authenticationRepository.signOut();
+    try {
+      await authenticationRepository.signOut();
+      emit(state.copyWith(
+        status: AuthStatus.unknown,
+        user: null,
+      ));
+    } catch (e) {
+      print(e);
+    }
   }
 }
