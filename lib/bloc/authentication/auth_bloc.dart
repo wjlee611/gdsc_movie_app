@@ -23,6 +23,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthInitEvent event,
     Emitter<AuthState> emit,
   ) async {
+    await _updateAuthState(emit);
+  }
+
+  Future<void> _authGoogleSigninEventHandler(
+    AuthGoogleSigninEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    try {
+      await authenticationRepository.signInWithGoogle();
+
+      await _updateAuthState(emit);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> _updateAuthState(
+    Emitter<AuthState> emit,
+  ) async {
     final user = await authenticationRepository.user.first;
 
     // SignOut 상태
@@ -45,22 +64,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           user: result,
         ));
       }
-    }
-  }
-
-  Future<void> _authGoogleSigninEventHandler(
-    AuthGoogleSigninEvent event,
-    Emitter<AuthState> emit,
-  ) async {
-    try {
-      await authenticationRepository.signInWithGoogle();
-      final user = await authenticationRepository.user.first;
-      emit(state.copyWith(
-        status: AuthStatus.unauthenticated,
-        user: user,
-      ));
-    } catch (e) {
-      print(e);
     }
   }
 

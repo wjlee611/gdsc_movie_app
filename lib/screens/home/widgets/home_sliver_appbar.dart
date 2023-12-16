@@ -93,11 +93,14 @@ class HomeSliverAppBar extends StatelessWidget {
                           children: [
                             CircleAvatar(
                               backgroundColor: Colors.blueGrey.shade400,
+                              foregroundImage:
+                                  Image.network(state.user?.profile ?? '')
+                                      .image,
                             ),
                             Gaps.h10,
-                            const Text(
-                              '000님 어서오세요',
-                              style: TextStyle(
+                            Text(
+                              '${state.user?.name}님 어서오세요',
+                              style: const TextStyle(
                                 fontSize: Sizes.size14,
                                 color: Colors.white,
                               ),
