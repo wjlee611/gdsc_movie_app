@@ -34,9 +34,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await authenticationRepository.signInWithGoogle();
 
       await _updateAuthState(emit);
-    } catch (e) {
-      print(e);
-    }
+    } catch (_) {}
   }
 
   Future<void> _updateAuthState(
@@ -77,8 +75,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         status: AuthStatus.unknown,
         user: null,
       ));
-    } catch (e) {
-      print(e);
-    }
+    } catch (_) {}
   }
 }

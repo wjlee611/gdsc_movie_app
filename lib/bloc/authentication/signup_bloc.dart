@@ -60,10 +60,8 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
     SignupUploadEvent event,
     Emitter<SignupState> emit,
   ) async {
-    print(state);
     // uploading image
     if (state.profileFile != null) {
-      print('uploading image');
       emit(state.copyWith(status: SignupStatus.uploadingImage));
 
       final storageRef = storage.ref().child('${state.user!.uid}/profile.jpg');
@@ -74,7 +72,6 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
     }
 
     // uploading profile
-    print('uploading profile');
     emit(state.copyWith(status: SignupStatus.uploadingImage));
     await userRepository.joinUser(state.user!);
 
