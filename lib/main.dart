@@ -5,7 +5,7 @@ import 'package:gdsc_movie_app/bloc/home/home_movies_bloc.dart';
 import 'package:gdsc_movie_app/bloc/search/search_movies_bloc.dart';
 import 'package:gdsc_movie_app/firebase_options.dart';
 import 'package:gdsc_movie_app/repositories/tmdb/tmdb_movie_repository.dart';
-import 'package:gdsc_movie_app/screens/home/home.dart';
+import 'package:gdsc_movie_app/screens/app_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,15 +41,7 @@ class MyApp extends StatelessWidget {
             ),
           )
         ],
-        child: MaterialApp(
-          title: 'Flutter Demo',
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
-            useMaterial3: true,
-          ),
-          home: const HomeScreen(),
-        ),
+        child: const AppRouter(),
       ),
     );
   }

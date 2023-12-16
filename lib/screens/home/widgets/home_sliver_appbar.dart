@@ -6,9 +6,8 @@ import 'package:gdsc_movie_app/bloc/search/search_movies_event.dart';
 import 'package:gdsc_movie_app/bloc/search/search_movies_state.dart';
 import 'package:gdsc_movie_app/constants/gaps.dart';
 import 'package:gdsc_movie_app/constants/sizes.dart';
-import 'package:gdsc_movie_app/screens/profile/profile_screen.dart';
-import 'package:gdsc_movie_app/screens/search/search_screen.dart';
 import 'package:gdsc_movie_app/widgets/common_input_widget.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeSliverAppBar extends StatelessWidget {
   const HomeSliverAppBar({super.key});
@@ -26,12 +25,7 @@ class HomeSliverAppBar extends StatelessWidget {
     BuildContext context, {
     required String value,
   }) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const SearchScreen(),
-      ),
-    );
+    context.push('/search');
   }
 
   @override
@@ -82,12 +76,7 @@ class HomeSliverAppBar extends StatelessWidget {
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ProfileScreen(),
-                      ),
-                    );
+                    context.push('/profile');
                   },
                   child: Row(
                     children: [
