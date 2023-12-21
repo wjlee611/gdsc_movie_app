@@ -72,7 +72,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
     }
 
     // uploading profile
-    emit(state.copyWith(status: SignupStatus.uploadingImage));
+    emit(state.copyWith(status: SignupStatus.uploadingProfile));
     await userRepository.joinUser(state.user!);
 
     emit(state.copyWith(status: SignupStatus.success));
